@@ -18,10 +18,10 @@ BIRD_WIDTH = 38
 BIRD_HEIGHT = 24
 
 function PlayState:init()
-    self.bird = Bird()
-    self.pipePairs = {}
-    self.timer = 0
-    self.score = 0
+    --self.bird = Bird()
+    -- self.pipePairs = {}
+    -- self.timer = 0
+    -- self.score = 0
     self.randomTimeInterval = 2
 
     -- initialize our last recorded Y value for a gap placement to base other gaps off of
@@ -85,7 +85,7 @@ function PlayState:update(dt)
                 sounds['hurt']:play()
 
                 gStateMachine:change('score', {
-                    score = self.score
+                    score = self.score,
                 })
             end
         end
@@ -103,6 +103,15 @@ function PlayState:update(dt)
             score = self.score
         })
     end
+
+    if love.keyboard.wasPressed("p") then
+        gStateMachine:change('pause', {
+            score = self.score,
+            bird = self.bird,
+            pipePairs = self.pipePairs,
+            timer = self.timer
+        })      
+    end
 end
 
 function PlayState:render()
@@ -119,7 +128,12 @@ end
 --[[
     Called when this state is transitioned to from another state.
 ]]
-function PlayState:enter()
+function PlayState:enter(params)
+    -- if we're coming from pauseSate or initializing the playState 
+    self.score = params and params.score or 0 
+    self.bird = params and params.bird or Bird()
+    self.pipePairs = params and params.pipePairs or {}
+    self.timer = params and params.timer or 0
     -- if we're coming from death, restart scrolling
     scrolling = true
 end
