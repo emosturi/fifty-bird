@@ -16,12 +16,26 @@ ScoreState = Class{__includes = BaseState}
 ]]
 function ScoreState:enter(params)
     self.score = params.score
+    self.timeStamp = os.date("%X %x")
+    self.ranking = params.ranking 
+    print(self.ranking)
+    table.insert(self.ranking, self.score.." points  -  "..self.timeStamp)
+    table.sort(self.ranking, function(a, b) return a > b end)
+    if #self.ranking > 3 then
+        local newRanking = {}
+        for i = 1, 3 do
+            newRanking[i] = self.ranking[i]
+        end
+        self.ranking = newRanking
+    end
 end
 
 function ScoreState:update(dt)
     -- go back to play if enter is pressed
     if love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') then
-        gStateMachine:change('countdown')
+        gStateMachine:change('countdown', {
+            ranking = self.ranking
+        })
     end
 end
 
@@ -31,7 +45,11 @@ function ScoreState:render()
     love.graphics.printf('Oops! You lost!', 0, 64, VIRTUAL_WIDTH, 'center')
 
     love.graphics.setFont(mediumFont)
-    love.graphics.printf('Score: ' .. tostring(self.score), 0, 100, VIRTUAL_WIDTH, 'center')
+    local height = 100
+    for k, v in pairs(self.ranking) do
+        love.graphics.printf('Record: '..self.ranking[k] , 0, height, VIRTUAL_WIDTH, 'center')
+        height = height + 20
+    end
 
     love.graphics.printf('Press Enter to Play Again!', 0, 160, VIRTUAL_WIDTH, 'center')
 end

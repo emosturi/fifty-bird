@@ -18,6 +18,10 @@ function CountdownState:init()
     self.timer = 0
 end
 
+function CountdownState:enter(params)
+    self.ranking = params and params.ranking or {}
+end
+
 --[[
     Keeps track of how much time has passed and decreases count if the
     timer has exceeded our countdown time. If we have gone down to 0,
@@ -31,7 +35,9 @@ function CountdownState:update(dt)
         self.count = self.count - 1
 
         if self.count == 0 then
-            gStateMachine:change('play')
+            gStateMachine:change('play', {
+                ranking = self.ranking
+            })
         end
     end
 end

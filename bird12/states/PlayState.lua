@@ -86,6 +86,7 @@ function PlayState:update(dt)
 
                 gStateMachine:change('score', {
                     score = self.score,
+                    ranking = self.ranking
                 })
             end
         end
@@ -100,7 +101,8 @@ function PlayState:update(dt)
         sounds['hurt']:play()
 
         gStateMachine:change('score', {
-            score = self.score
+            score = self.score,
+            ranking = self.ranking
         })
     end
 
@@ -109,7 +111,8 @@ function PlayState:update(dt)
             score = self.score,
             bird = self.bird,
             pipePairs = self.pipePairs,
-            timer = self.timer
+            timer = self.timer,
+            ranking = self.ranking
         })      
     end
 end
@@ -134,6 +137,7 @@ function PlayState:enter(params)
     self.bird = params and params.bird or Bird()
     self.pipePairs = params and params.pipePairs or {}
     self.timer = params and params.timer or 0
+    self.ranking = params and params.ranking or {}
     -- if we're coming from death, restart scrolling
     scrolling = true
 end

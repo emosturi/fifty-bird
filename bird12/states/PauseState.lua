@@ -15,6 +15,7 @@ function PauseState:enter(params)
     self.bird = params.bird
     self.pipePairs = params.pipePairs
     self.timer = params.timer
+    self.ranking = params.ranking
 end
 
 function PauseState:update(dt)
@@ -24,7 +25,8 @@ function PauseState:update(dt)
             score = self.score,
             bird = self.bird,
             pipePairs = self.pipePairs,
-            timer = self.timer
+            timer = self.timer,
+            ranking = self.ranking
         })
     end
 end
