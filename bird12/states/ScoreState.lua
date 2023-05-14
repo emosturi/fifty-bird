@@ -18,8 +18,10 @@ function ScoreState:enter(params)
     self.score = params.score
     self.timeStamp = os.date("%X %x")
     self.ranking = params.ranking 
-    table.insert(self.ranking, {self.score, self.timeStamp})
-    table.sort(self.ranking, function(a, b) return a[1] > b[1] end)
+    if self.score > 10 then
+        table.insert(self.ranking, {self.score, self.timeStamp})
+    end
+        table.sort(self.ranking, function(a, b) return a[1] > b[1] end)
     if #self.ranking > 3 then
         local newRanking = {}
         for i = 1, 3 do
@@ -52,7 +54,7 @@ function ScoreState:render()
     love.graphics.setFont(flappyFont)
     love.graphics.printf('Oops! You lost!', 0, 64, VIRTUAL_WIDTH, 'center')
 
-    love.graphics.setFont(mediumFont)
+    love.graphics.setFont(mediumFont)   
     for k, v in pairs(self.ranking) do
         love.graphics.printf('Record: '..v[1]..' points  -  '..v[2] , 0, height, VIRTUAL_WIDTH, 'center')
         height = height + 20
@@ -60,8 +62,6 @@ function ScoreState:render()
             podium = k
         end
     end
-
-    love.graphics.printf('Press Enter to Play Again!', 0, 160, VIRTUAL_WIDTH, 'center')
     if podium ~= 0 then
         love.graphics.printf('You got '..medal[podium]..' medal!', 0, 180, VIRTUAL_WIDTH, 'center')
         if podium == 1 then
@@ -72,4 +72,5 @@ function ScoreState:render()
             love.graphics.draw(self.bronce, VIRTUAL_WIDTH / 2 -15, VIRTUAL_HEIGHT -80 )
         end
     end
+    love.graphics.printf('Press Enter to Play Again!', 0, 160, VIRTUAL_WIDTH, 'center')
 end
