@@ -17,6 +17,7 @@ function PauseState:enter(params)
     self.timer = params.timer
     self.ranking = params.ranking
     sounds['music']:pause()
+    sounds['score']:play()
 end
 
 function PauseState:update(dt)
@@ -46,5 +47,6 @@ function PauseState:render()
 end
 
 function PauseState:exit()
+    sounds['score']:play()
     sounds['music']:play()
 end

@@ -18,7 +18,7 @@ function ScoreState:enter(params)
     self.score = params.score
     self.timeStamp = os.date("%X %x")
     self.ranking = params.ranking 
-    if self.score > 10 then
+    if self.score > 3 then
         table.insert(self.ranking, {self.score, self.timeStamp})
     end
         table.sort(self.ranking, function(a, b) return a[1] > b[1] end)
