@@ -16,6 +16,7 @@ function PauseState:enter(params)
     self.pipePairs = params.pipePairs
     self.timer = params.timer
     self.ranking = params.ranking
+    sounds['music']:pause()
 end
 
 function PauseState:update(dt)
@@ -38,6 +39,12 @@ function PauseState:render()
 
     love.graphics.setFont(mediumFont)
     love.graphics.printf('Score: ' .. tostring(self.score), 0, 100, VIRTUAL_WIDTH, 'center')
+    love.graphics.setFont(hugeFont)
+    love.graphics.printf('||', 0, 125, VIRTUAL_WIDTH, 'center')
+    love.graphics.setFont(mediumFont)
+    love.graphics.printf('Press P to continue Playing!', 0, 190, VIRTUAL_WIDTH, 'center')
+end
 
-    love.graphics.printf('Press P to continue Playing!', 0, 160, VIRTUAL_WIDTH, 'center')
+function PauseState:exit()
+    sounds['music']:play()
 end
